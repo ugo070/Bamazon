@@ -1,0 +1,20 @@
+input.new-item:focus {
+  outline: none;
+}
+
+.list-group-item > button.delete,
+.list-group-item > button.complete {
+  float: right;
+  height: 25px;
+  margin-left: 5px;
+}
+
+.lead {
+  font-style: oblique;
+}
+.jumbotron {
+  font-family: Shrikhand, cursive;
+  color: white;
+  background-color: #1da1f2;
+  margin: 0 auto;
+}
