@@ -1,7 +1,7 @@
 $(document).ready(function() {
   // Getting a reference to the input field where user adds a new product
   var $newItemInput = $("input.new-item");
-  // Our new todos will go inside the todoContainer
+  // Our new todos will go inside the productContainer
   var $productContainer = $(".product-container");
   // Adding event listeners for purchase,updating, and adding product
   $(document).on("click", "button.purchase", purchaseProduct);

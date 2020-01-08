@@ -39,3 +39,9 @@ VALUES ("Pork","Meat",10.00,20);
 
 INSERT INTO product (product_name, department_name, price, stock_quantity)
 VALUES ("Ice cream", "Frozen Foods",2.29, 20);
+
+
+"UPDATE product SET stock_quantity = stock_quantity - ? WHERE id =? ",
+ [answer.amount, answer.product_id],
+-- to refresh the bamazon database:
+-- npx sequelize-cli db:seed:all --env production
