@@ -8,11 +8,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      productName: {
+      product_name: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      departmentName: {
+      department_name: {
         allowNull: false,
         type: Sequelize.STRING
       },
@@ -20,7 +20,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER
       },
-      stockQuantity: {
+      stock_quantity: {
         allowNull: false,
         type: Sequelize.INTEGER
       },

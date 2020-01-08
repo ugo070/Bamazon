@@ -15,6 +15,7 @@ module.exports = function(app) {
   app.get("/api/product", function(req, res) {
     // findAll returns all entries for a table when used with no options
     db.Product.findAll({}).then(function(dbProduct) {
+      console.log(dbProduct);
       // We have access to the product as an argument inside of the callback function
       res.json(dbProduct);
     });

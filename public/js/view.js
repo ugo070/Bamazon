@@ -4,7 +4,7 @@ $(document).ready(function() {
   // Our new todos will go inside the productContainer
   var $productContainer = $(".product-container");
   // Adding event listeners for purchase,updating, and adding product
-  $(document).on("click", "button.purchase", purchaseProduct);
+  // $(document).on("click", "button.purchase", purchaseProduct);
   $(document).on("click", "button.complete", toggleComplete);
   $(document).on("click", "button.delete", deleteProduct);
   $(document).on("click", ".product-item", editProduct);
@@ -19,20 +19,24 @@ $(document).ready(function() {
   getProduct();
 
   // This function resets the product displayed with new product from the database
-  function initializeRows() {
-    $productContainer.empty();
+  function initializeRows(product) {
+    $(".product-container").empty();
     var rowsToAdd = [];
     for (var i = 0; i < product.length; i++) {
-      rowsToAdd.push(createNewRow(product[i]));
+      //rowsToAdd.push(createNewRow(product[i]));
+      let productrow = `<tr><td>${product[i].id}</td><td>${product[i].product_name}</td><td>${product[i].department_name}</td><td>${product[i].price}</td><td>${product[i].stock_quantity}</td></tr>`;
+      $(".product-container").append(productrow);
     }
-    $productContainer.prepend(rowsToAdd);
+    console.log(product);
   }
 
   // This function grabs product from the database and updates the view
   function getProduct() {
+    console.log("hit");
     $.get("/api/product", function(data) {
       product = data;
-      initializeRows();
+      console.log(product);
+      initializeRows(product);
     });
   }
 
@@ -48,7 +52,7 @@ $(document).ready(function() {
 
   // This function handles showing the input box for a user to edit a product
   function editProduct() {
-    var currentProduct = $(this).data("todo");
+    var currentProduct = $(this).data("product");
     $(this)
       .children()
       .hide();
@@ -68,22 +72,22 @@ $(document).ready(function() {
     event.stopPropagation();
     var product = $(this)
       .parent()
-      .data("todo");
+      .data("product");
     product.complete = !product.complete;
     updateProduct(product);
   }
 
-  // This function starts updating a todo in the database if a user hits the "Enter Key"
+  // This function starts updating a product in the database if a user hits the "Enter Key"
   // While in edit mode
   function finishEdit(event) {
-    var updatedProduct = $(this).data("todo");
+    var updatedProduct = $(this).data("product");
     if (event.which === 13) {
       updatedProduct.text = $(this)
         .children("input")
         .val()
         .trim();
       $(this).blur();
-      updateTodo(updatedProduct);
+      updateProduct(updatedProduct);
     }
   }
 
@@ -120,6 +124,7 @@ $(document).ready(function() {
   function createNewRow(product) {
     var $newInputRow = $(
       [
+        "<tr>",
         "<li class='list-group-item product-item'>",
         "<span>",
         product.text,
@@ -127,7 +132,8 @@ $(document).ready(function() {
         "<input type='text' class='edit' style='display: none;'>",
         "<button class='delete btn btn-danger'>x</button>",
         "<button class='complete btn btn-primary'>✓</button>",
-        "</li>"
+        "</li>",
+        "</tr>"
       ].join("")
     );
 
