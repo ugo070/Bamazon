@@ -1,45 +1,52 @@
-// *********************************************************************************
-// api-routes.js - this file offers a set of routes for displaying and saving data to the db
-// *********************************************************************************
+// Import in our db models
+const db = require('../models');
 
-// Dependencies
-// =============================================================
 
-// Requiring our Product model
-var db = require("../models");
+// ===============================================================================
+// ROUTING
+// ===============================================================================
 
-// Routes
-// =============================================================
 module.exports = function(app) {
-  // GET route for getting all of the product
-  app.get("/api/product", function(req, res) {
-    // findAll returns all entries for a table when used with no options
-    db.Product.findAll({}).then(function(dbProduct) {
-      console.log(dbProduct);
-      // We have access to the product as an argument inside of the callback function
-      res.json(dbProduct);
+
+  // API Requests for /api/products
+  // Below code controls what happens when a request is made to /api/products
+
+  // GET Request
+  // Responds with all products
+  app.get('/api/products', function(req, res) {
+    db.Product.findAll({}).then(function(rows) {
+      res.json(rows)
+    }).catch(function(error) {
+      res.json({ error: error });
     });
   });
 
-  // POST route for saving a new product
-  app.post("/api/product", function(req, res) {
-    console.log(req.body);
-    // create takes an argument of an object describing the item we want to
-    // insert into our table. In this case we just we pass in an object with a text
-    // and complete property (req.body)
-    db.Product.create({
-      text: req.body.text,
-      complete: req.body.complete
-    }).then(function(dbProduct) {
-      // We have access to the new product as an argument inside of the callback function
-      res.json(dbProduct);
-    });
+  // API Requests for /api/products/:id
+  // Below code controls what happens when a request is made to /api/products/:id
+
+  // GET Request
+  // Responds with just the requested product at the referenced id
+  app.get('/api/products/:id', function(req, res) {
+    db.Product.find({ where: { id: req.params.id }})
+      .then(function(data){
+        res.json(data);
+      }).catch(function(error) {
+        res.json({ error: error });
+      });
   });
 
-  // DELETE route for deleting product. We can get the id of the product we want to delete from
-  // req.params.id
-  app.delete("/api/product/:id", function(req, res) {});
-
-  // PUT route for updating product. We can get the updated todo from req.body
-  app.put("/api/product", function(req, res) {});
-};
+  // PUT Request
+  // Replaces the product at the referenced id with the one provided
+  // Responds with success: true or false if successful
+  app.put('/api/products/:id', function(req, res) {
+    db.Product.update(
+      req.body,
+      { where: { id: req.params.id } }
+    ).then(function(data) {
+      res.json({ success: true, data: data });
+    }).catch(function(error) {
+      res.json({ success: false, error: error });
+    });
+  });
+  
+}
